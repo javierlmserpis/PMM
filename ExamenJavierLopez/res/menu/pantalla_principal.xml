@@ -1,0 +1,11 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item android:id="@+id/MenuOpcDibujo" 
+        android:title="Pantalla de Dibujo">
+    </item>
+    
+    <item android:id="@+id/MenuOpcAcercaDe"
+        android:title="Acerca de">
+    </item>
+
+</menu>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">BDCENTROS</string>
+    <string name="action_settings">Settings</string>
+    <string name="lblAdd">Añade un nombre del centro</string>
+    <string name="btnAdd">Añadir</string>
+    <string name="txtHint">Insertar campo</string>
+    <string name="lblDisp">Selecciona ID</string>
+    <string name="btnEliminar">Eliminar</string>
+	<string name="txtHintCodigo">Inserta el codigo ID</string>
+	<string name="txtNombre">Selecciona nombre</string>
+</resources>

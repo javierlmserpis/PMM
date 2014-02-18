@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Examen JavierLopez</string>
+    <string name="tituloapp">TRANSPORTES ANDROID</string>
+    <string name="lblTarifaNormal">TARIFA NORMAL</string>
+    <string name="lblTarifaUrgente">TARIFA URGENTE</string>
+    <string name="lblCajaRegalo">Caja regalo</string>
+    <string name="lblTarjetaDedicada">Con tarjeta dedicada</string>
+    <string name="BotoNombre">HACER CALCULOS</string>
+    <string name="Casita">Casita</string>
+    <string name="Resultado">Resultado de su operacion</string>
+    
+</resources>
