@@ -44,6 +44,8 @@
         android:layout_marginLeft="8dip"
         android:layout_marginTop="8dip"
         android:text="@string/btnEliminar" />
+    
+    
  
     <TextView
         android:layout_width="fill_parent"
@@ -53,7 +55,7 @@
 
     <Spinner
         android:id="@+id/spinnerId"
-        android:layout_width="fill_parent"
+        android:layout_width="114dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dip"
         android:layout_marginRight="8dip"
@@ -73,5 +75,7 @@
         android:layout_marginLeft="8dip"
         android:layout_marginRight="8dip"
         android:layout_marginTop="20dip" />
+    
+    
 
 </LinearLayout>

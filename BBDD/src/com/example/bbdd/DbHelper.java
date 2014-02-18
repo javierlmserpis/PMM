@@ -10,29 +10,29 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
  
 public class DbHelper extends SQLiteOpenHelper{
-     // Database Version
-    private static final int DB_VERSION = 4;
+     // Version de la base de datos
+    private static final int DB_VERSION = 1;
    
-    // Database Name
+    // Nombre de la base de datos
     private static final String DB_NAME = "bdcentros.db";
    
-    // Table name
+    // Nombre de la tabla
     private static final String TABLA_1 = "centros";
-    private static final String TABLA_2 = "personal";
-    private static final String TABLA_3 = "profesores";
+  //  private static final String TABLA_2 = "personal";
+  //  private static final String TABLA_3 = "profesores";
     
-    // Column names
-    private static final String KEY_ID = "";
+    // Nombres de las columnas con las que vamos a trabajar
+    private static final String KEY_ID = "cod_centro";
     private static final String KEY_NAME = "nombre";
     
-    
+    //Ayudador de la base de datos
     public DbHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
     }
  
     @Override
     public void onCreate(SQLiteDatabase db) {
-        // Create table query
+        // Strings de las sentencias SQL
     	String sqlCreateCentros = "CREATE TABLE centros ( cod_centro   SMALLINT , " +
     			"tipo_centro  CHAR(1)," +
     			"nombre VARCHAR(30)," +
@@ -94,38 +94,28 @@ public class DbHelper extends SQLiteOpenHelper{
  
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        // Drop older table if existed
+        // Si hay una nueva version, hacemos DROP de las tablas viejas
         db.execSQL("DROP TABLE IF EXISTS centros");
         db.execSQL("DROP TABLE IF EXISTS personal"); 
         db.execSQL("DROP TABLE IF EXISTS profesores");
         
-        // Create tables again
-        onCreate(db);
-         
+        // Creamos las tablas de nuevo
+        onCreate(db);    
     }
-     public void guardarId(String id){
+    
+     //METODO para insertar un nuevo centro en nuestra base de datos
+     public void insertCentro(String id,String nombre){
     	 SQLiteDatabase db = this.getWritableDatabase();
     	 
     	 ContentValues values = new ContentValues();
     	 values.put(KEY_ID, id);
+    	 values.put(KEY_NAME,nombre);
     	 
     	 db.insert(TABLA_1, null , values);
     	 db.close();
      }
-     /**
-     * Insert data to table
-     * */
-    public void guardarNombre(String label){
-        SQLiteDatabase db = this.getWritableDatabase();
-          
-        ContentValues values = new ContentValues();
-        values.put(KEY_NAME, label);
-           
-        // Inserting Row
-        db.insert(TABLA_1, null, values);
-        db.close(); // Closing database connection
-    }
-    
+
+    //METODO para eliminar un centro (ELIMINAMOS POR LLAVE PRIMARIA) 
     public void eliminarPorId(String labelcod){
     	SQLiteDatabase db = this.getWritableDatabase();
     	String sqlDelete = "DELETE FROM " + TABLA_1 + " where cod_centro=" +labelcod;
@@ -133,52 +123,45 @@ public class DbHelper extends SQLiteOpenHelper{
     	db.close();
     }
     
-    public List<String> getAllNames(){
-        List<String> names = new ArrayList<String>();
-  
-        // Select All Query
+    public List<String> cogerNombres(){
+        List<String> nombresDB = new ArrayList<String>();
+        
         String selectQuery = "SELECT  * FROM " + TABLA_1;
        
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
        
-        // looping through all rows and adding to list
+        //Bucle sobre las columnas y vamos añadiendo los nombres a la lista de tipo List<>
         if (cursor.moveToFirst()) {
             do {
-                names.add(cursor.getString(2));
+                nombresDB.add(cursor.getString(2));
             } while (cursor.moveToNext());
         }
-          
-        // closing connection
         cursor.close();
         db.close();
           
-        // returning names
-        return names;
+        return nombresDB;
     }
     
-    public List<String> getAllIds(){
-        List<String> names = new ArrayList<String>();
+    public List<String> cogerIDs(){
+        List<String> idDB = new ArrayList<String>();
   
-        // Select All Query
         String selectQuery = "SELECT  * FROM " + TABLA_1;
        
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
        
-        // looping through all rows and adding to list
+        //Bucle sobre las columnas y vamos añadiendo los ID'S a la lista de tipo List<>
         if (cursor.moveToFirst()) {
             do {
-                names.add(cursor.getString(0));
+                idDB.add(cursor.getString(0));
             } while (cursor.moveToNext());
         }
-          
-        // closing connection
+
         cursor.close();
         db.close();
           
-        // returning names
-        return names;
+        return idDB;
     }
  
 }

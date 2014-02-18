@@ -26,65 +26,45 @@ public class MainActivity extends Activity implements OnItemSelectedListener{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
- 
-        // Spinner element
+        //Declaramos variables del spinner
         spinner = (Spinner) findViewById(R.id.spinner);
         spinnerId = (Spinner) findViewById(R.id.spinnerId);
-        
-        // add button
+        //Variables de los botones
         btnAdd = (Button) findViewById(R.id.btn_add);
         btnEliminar = (Button) findViewById(R.id.btnEliminar);
-        // new name input field
+        //Variables de las entradas de texto
         inputName = (EditText) findViewById(R.id.input_name);
         inputCodigo = (EditText) findViewById(R.id.inputCodigo);
-        // Spinner click listener
+
         spinner.setOnItemSelectedListener(this);
         spinnerId.setOnItemSelectedListener(this);
         
-        // Loading spinner data from database
-        loadSpinnerData();
+        //METODOS para recargar el spinner
+        cargarSpinnerNombres();
         cargarSpinnerId();
-        /**
-         * Add new name button click listener
-         * */
+        
         btnAdd.setOnClickListener(new View.OnClickListener() {
  
             @Override
             public void onClick(View arg0) {
                 String id = inputCodigo.getText().toString();
                 String label = inputName.getText().toString();
-                
-                if(label.trim().length() > 0){
+                //SOLO INSERTA si el campo ID NO esta vacio
+                if(id.trim().length() > 0){
                 	DbHelper db = new DbHelper(getApplicationContext());
                 	
-                	db.guardarId(id);
+                	db.insertCentro(id, label);
                 	
                 	inputCodigo.setText("");
+                	inputName.setText("");
+                	//METODOS para recargar el spinner
                 	cargarSpinnerId();
+                	cargarSpinnerNombres();
                 } else{
-                	Toast.makeText(getApplicationContext(), "Selecciona un nombre", Toast.LENGTH_SHORT);
+                	Toast.makeText(getApplicationContext(), "ERROR al insertar en la BASE DE DATOS", Toast.LENGTH_SHORT).show();
+                	cargarSpinnerId();
+                	cargarSpinnerNombres();
                 }
-                
-                
-                
-                if (label.trim().length() > 0) {
-                    // database handler
-                    DbHelper db = new DbHelper(getApplicationContext());
- 
-                    // inserting new name into database
-                    db.guardarNombre(label);
-                    
-                    // making input filed text to blank
-                    inputName.setText("");
- 
-                    // loading spinner with newly added data
-                    loadSpinnerData();
-                } else {
-                    Toast.makeText(getApplicationContext(),
-                            "Selecciona un nombre", Toast.LENGTH_SHORT)
-                            .show();
-                }
- 
             }
         });
         
@@ -93,49 +73,45 @@ public class MainActivity extends Activity implements OnItemSelectedListener{
 			@Override
 			public void onClick(View v) {
 				String labelCod = inputCodigo.getText().toString();
-				
+				//SOLO ELIMINA si el campo ID no esta vacio
 				if(labelCod.trim().length() > 0){
 					DbHelper db = new DbHelper(getApplicationContext());
 					
 					db.eliminarPorId(labelCod);
 					
 					inputCodigo.setText("");
+					//METODOS para recargar el spinner
                     cargarSpinnerId();
-                    loadSpinnerData();
+                    cargarSpinnerNombres();
 				}else{
 					Toast.makeText(getApplicationContext(), "Error al eliminar ID", Toast.LENGTH_SHORT).show();
+					cargarSpinnerId();
+                    cargarSpinnerNombres();
 				}
-				
 			}
 		});
-        
     }
  
-    /**
-     * Function to load the spinner data from SQLite database
-     * */
-    private void loadSpinnerData() {
-        // database handler
+    private void cargarSpinnerNombres() {
         DbHelper db = new DbHelper(getApplicationContext());
  
-        // Spinner Drop down elements
-        List<String> lables = db.getAllNames();
+        List<String> lables = db.cogerNombres();
  
-        // Creating adapter for spinner
+        //Adaptador para el spinner
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item, lables);
  
-        // Drop down layout style - list view with radio button
+        //Estilo del layout para el desplazamiento del spinner
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
  
-        // attaching data adapter to spinner
+        //Insertamos el adaptador al spinner
         spinner.setAdapter(dataAdapter);
     }
     
     private void cargarSpinnerId(){
     	DbHelper db = new DbHelper(getApplicationContext());
     	
-    	List<String> lables = db.getAllIds();
+    	List<String> lables = db.cogerIDs();
     	
     	ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,lables);
     	
@@ -147,19 +123,18 @@ public class MainActivity extends Activity implements OnItemSelectedListener{
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position,
             long id) {
-        // On selecting a spinner item
+    	
         String label = parent.getItemAtPosition(position).toString();
  
-        // Showing selected spinner item
+        //Texto al tener seleccionado algo en el spinner
         Toast.makeText(parent.getContext(), "Has seleccionado: " + label,
                 Toast.LENGTH_LONG).show();
- 
     }
  
     @Override
     public void onNothingSelected(AdapterView<?> arg0) {
-        // TODO Auto-generated method stub
- 
+    	cargarSpinnerId();
+        cargarSpinnerNombres();
     }
 
 }
